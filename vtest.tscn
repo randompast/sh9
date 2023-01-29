@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://bx5lxkr1wxwwa"]
+
+[ext_resource type="Script" path="res://MeshInstance3D.gd" id="1_f484r"]
+
+[sub_resource type="Shader" id="Shader_8twn0"]
+code = "shader_type spatial;
+global uniform vec3 bend_position;
+
+void vertex(){
+	VERTEX.y += sin(TIME*5.0 + VERTEX.x*10.0 + VERTEX.z*10.0)*0.1;
+//	VERTEX.x = VERTEX.x - bend_position.x;
+}
+
+void fragment() {
+	ALBEDO = vec3(1.0,0,0);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xkpv"]
+render_priority = 0
+shader = SubResource("Shader_8twn0")
+
+[sub_resource type="SphereMesh" id="SphereMesh_i2ijk"]
+material = SubResource("ShaderMaterial_0xkpv")
+
+[sub_resource type="SphereMesh" id="SphereMesh_811vg"]
+
+[sub_resource type="Environment" id="Environment_g2frt"]
+sdfgi_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_hjtc1"]
+
+[node name="vtest" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("SphereMesh_i2ijk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1, 0, 0)
+mesh = SubResource("SphereMesh_811vg")
+script = ExtResource("1_f484r")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_g2frt")
+camera_attributes = SubResource("CameraAttributesPractical_hjtc1")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.719716, 0, -0.694269, 0, 1, 0, 0.694269, 0, 0.719716, -2.23054, 0, 2.49545)

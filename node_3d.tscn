@@ -1,0 +1,133 @@
+[gd_scene load_steps=23 format=3 uid="uid://b2bm8kxmre3q4"]
+
+[ext_resource type="Shader" path="res://test.gdshader" id="1_e2qke"]
+[ext_resource type="Shader" path="res://particles.gdshader" id="2_tmorc"]
+[ext_resource type="Shader" path="res://node_3d.gdshader" id="2_w4nfx"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3ek3a"]
+
+[sub_resource type="Gradient" id="Gradient_t2ln7"]
+offsets = PackedFloat32Array(0, 0.14, 0.28, 0.4, 0.49, 0.62, 0.75, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tw1vp"]
+gradient = SubResource("Gradient_t2ln7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spem4"]
+render_priority = 0
+shader = ExtResource("1_e2qke")
+shader_parameter/diameter = 100.0
+shader_parameter/band_size = 0.1
+shader_parameter/interpolation_value = 0.1
+shader_parameter/sky_gradient = SubResource("GradientTexture1D_tw1vp")
+
+[sub_resource type="SphereMesh" id="SphereMesh_305w1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ll58f"]
+shader = ExtResource("2_tmorc")
+
+[sub_resource type="Gradient" id="Gradient_xlvkt"]
+offsets = PackedFloat32Array(0, 0.2, 0.4, 0.7, 1)
+colors = PackedColorArray(0.560784, 0.560784, 0.560784, 1, 0.894118, 0.803922, 0.45098, 1, 0.776471, 0, 0, 1, 0.792157, 0.262745, 0.741176, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tyvph"]
+gradient = SubResource("Gradient_xlvkt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lasp0"]
+render_priority = 0
+shader = ExtResource("2_w4nfx")
+shader_parameter/diameter = 100.0
+shader_parameter/band_size = 0.1
+shader_parameter/interpolation_value = 0.253
+shader_parameter/sky_gradient = SubResource("GradientTexture1D_tyvph")
+
+[sub_resource type="SphereMesh" id="SphereMesh_g4pqs"]
+material = SubResource("ShaderMaterial_lasp0")
+radial_segments = 32
+rings = 16
+
+[sub_resource type="Gradient" id="Gradient_7hmi0"]
+offsets = PackedFloat32Array(0, 0.2, 0.3, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0.996078, 1, 0.866667, 1, 1, 0.94902, 0, 1, 1, 0.215686, 0.117647, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_m8304"]
+gradient = SubResource("Gradient_7hmi0")
+
+[sub_resource type="Curve" id="Curve_gamx8"]
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 2.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_n7scw"]
+curve = SubResource("Curve_gamx8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_awmjp"]
+lifetime_randomness = 1.0
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+gravity = Vector3(0, 100, 0)
+angular_velocity_min = 10.0
+angular_velocity_max = 10.0
+tangential_accel_min = 50.0
+tangential_accel_max = 75.0
+color = Color(0.580392, 0.258824, 0.0705882, 1)
+color_ramp = SubResource("GradientTexture1D_m8304")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("CurveTexture_n7scw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taq53"]
+transparency = 1
+blend_mode = 1
+vertex_color_use_as_albedo = true
+emission_enabled = true
+texture_filter = 0
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_m8a83"]
+lightmap_size_hint = Vector2i(7, 7)
+material = SubResource("StandardMaterial3D_taq53")
+
+[sub_resource type="Environment" id="Environment_eiv5l"]
+background_mode = 1
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_4483v"]
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(0.999999, -0.000121924, 0.0013959, 0.000121323, 1, 0.000431328, -0.00139595, -0.000431158, 0.999999, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+visible = false
+mesh = SubResource("PlaneMesh_3ek3a")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+visible = false
+amount = 5
+process_material = SubResource("ShaderMaterial_spem4")
+draw_pass_1 = SubResource("SphereMesh_305w1")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+amount = 98
+explosiveness = 1.0
+collision_base_size = 0.0
+process_material = SubResource("ShaderMaterial_ll58f")
+draw_pass_1 = SubResource("SphereMesh_g4pqs")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.1, 7.81597e-14, -1.16415e-10, 7.10543e-15, 0.1, 0, 1.01863e-10, 7.27596e-12, 0.1, 0, 0, 0)
+amount = 10000
+process_material = SubResource("ParticleProcessMaterial_awmjp")
+draw_pass_1 = SubResource("QuadMesh_m8a83")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, -1.00857e-09, -1.39698e-09, 1.64277e-11, 1, 2.91038e-10, 1.39698e-09, 0, 1, -0.0153555, -0.00474274, 11)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eiv5l")
+camera_attributes = SubResource("CameraAttributesPractical_4483v")

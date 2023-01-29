@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://caurv5vibfnft"]
+
+[sub_resource type="Environment" id="Environment_lgdmk"]
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 2.474
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_emission_energy = 4.0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_3yqfu"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_434mx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4vdkg"]
+
+[node name="we" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lgdmk")
+camera_attributes = SubResource("CameraAttributesPractical_3yqfu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("PlaneMesh_434mx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2, 0, 0)
+mesh = SubResource("BoxMesh_4vdkg")
